@@ -1,11 +1,15 @@
 <resources>
+    <string name="source_onliner">http://onliner.by/feed</string>
+    <string name="source_lenta">http://lenta.ru/rss</string>
+    <string name="source_tutby">http://news.tut.by/rss</string>
+
     <string name="app_name">RssReader</string>
     <string name="navigation_drawer_open">Открыть боковую панель</string>
     <string name="navigation_drawer_close">Закрыть боковую панель</string>
     <string name="nav_item_tut_by">TUT.BY</string>
     <string name="nav_item_onliner">Onliner.by</string>
     <string name="nav_item_lenta">Lenta.ru</string>
-    <string name="nav_item_offer_news">Lenta.ru</string>
+    <string name="nav_item_offer_news">Предложить новость</string>
     <string name="nav_item_settings">Настройки</string>
     <string name="nav_item_about">О нас</string>
 </resources>

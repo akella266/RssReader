@@ -17,38 +17,40 @@ public class NewsRepository implements NewsDataSource {
 
     private final NewsDataSource mNewsRemoteDataSource;
 
-    Map<String, News> mCachedNews;
-    boolean mCacheisDirty = false;
+    private Map<String, News> mCachedNews;
+    private boolean mCacheIsDirty = false;
+    private String mOldSource;
 
     @Inject
     public NewsRepository(@Remote NewsDataSource mNewsRemoteDataSource) {
         this.mNewsRemoteDataSource = mNewsRemoteDataSource;
+        this.mOldSource = "";
     }
 
     @Override
-    public void getNews(@NonNull LoadNewsCallback callback) {
+    public void getNews(@NonNull String source, @NonNull LoadNewsCallback callback) {
 
-        if (mCachedNews != null && !mCacheisDirty){
+        if (mCachedNews != null && !mCacheIsDirty && source.equals(mOldSource)){
             callback.onNewsLoaded(new ArrayList<>(mCachedNews.values()));
             return;
         }
 
-        if(mCacheisDirty){
-            getTasksFromRemoveDataSource(callback);
+        if(mCacheIsDirty){
+            getTasksFromRemoveDataSource(source, callback);
         }
         else{
             //запрос из бд
-            getTasksFromRemoveDataSource(callback);
+            getTasksFromRemoveDataSource(source, callback);
         }
     }
 
     @Override
-    public void getNews(@NonNull String id, @NonNull GetNewsCallback callback) {
+    public void getNews(@NonNull String source, @NonNull String id, @NonNull GetNewsCallback callback) {
 
     }
 
     @Override
-    public void saveNews(News news) {
+    public void saveNews(@NonNull String source, News news) {
 
     }
 
@@ -62,8 +64,8 @@ public class NewsRepository implements NewsDataSource {
 
     }
 
-    private void getTasksFromRemoveDataSource(@NonNull final LoadNewsCallback callback){
-        mNewsRemoteDataSource.getNews(new LoadNewsCallback() {
+    private void getTasksFromRemoveDataSource(@NonNull String source, @NonNull final LoadNewsCallback callback){
+        mNewsRemoteDataSource.getNews(source, new LoadNewsCallback() {
             @Override
             public void onNewsLoaded(List<News> news) {
                 refreshCache(news);
@@ -85,6 +87,6 @@ public class NewsRepository implements NewsDataSource {
         for(News item : news){
             mCachedNews.put(item.getId(), item);
         }
-        mCacheisDirty = false;
+        mCacheIsDirty = false;
     }
 }

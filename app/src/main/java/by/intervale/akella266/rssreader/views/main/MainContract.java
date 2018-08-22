@@ -15,7 +15,8 @@ public interface MainContract {
     }
     interface Presenter extends BasePresenter<View>{
         void loadNews(final boolean showLoadingUI);
-        void setFiltering(NewsFilteringType type);
+        void setFiltering(NewsFilterType type);
         boolean checkNetworkAvailable();
+        void setSource(String source);
     }
 }

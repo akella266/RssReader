@@ -6,7 +6,8 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_tut_by"
-            android:title="@string/nav_item_tut_by" />
+            android:title="@string/nav_item_tut_by"
+            android:checked="true"/>
         <item
             android:id="@+id/nav_onliner_by"
             android:title="@string/nav_item_onliner" />

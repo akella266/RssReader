@@ -20,9 +20,9 @@ public interface NewsDataSource {
         void onDataNotAvailable();
     }
 
-    void getNews(@NonNull LoadNewsCallback callback);
-    void getNews(@NonNull String id, @NonNull GetNewsCallback callback);
-    void saveNews(News news);
+    void getNews(@NonNull String source, @NonNull LoadNewsCallback callback);
+    void getNews(@NonNull String source, @NonNull String id, @NonNull GetNewsCallback callback);
+    void saveNews(@NonNull String source, News news);
     void refreshNews();
     void clearNews();
 }

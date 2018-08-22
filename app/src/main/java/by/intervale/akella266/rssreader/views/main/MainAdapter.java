@@ -49,15 +49,21 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
         );
         holder.mSource.setText(news.getSource());
 
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.placeholder(R.drawable.ic_launcher_foreground);
-        requestOptions.error(R.drawable.ic_launcher_foreground);
-//        requestOptions.fitCenter();
-        Glide.with(mContext)
-                .asDrawable()
-                .apply(requestOptions)
-                .load(news.getImage())
-                .into(holder.mImageView);
+        if (news.getImage() != null) {
+            if (holder.mImageView.getVisibility() == View.GONE)
+                holder.mImageView.setVisibility(View.VISIBLE);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.placeholder(R.drawable.ic_launcher_foreground);
+            requestOptions.error(R.drawable.ic_launcher_foreground);
+            Glide.with(mContext)
+                    .asDrawable()
+                    .apply(requestOptions)
+                    .load(news.getImage())
+                    .into(holder.mImageView);
+        }
+        else{
+            holder.mImageView.setVisibility(View.GONE);
+        }
     }
 
     @Override

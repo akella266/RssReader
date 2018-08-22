@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 27
@@ -70,4 +69,6 @@ dependencies {
     implementation 'com.prof.rssparser:rssparser:1.4.1'
 
     implementation 'jp.wasabeef:glide-transformations:3.0.1'
+
+    implementation 'org.greenrobot:eventbus:3.1.1'
 }

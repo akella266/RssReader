@@ -9,9 +9,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -23,6 +28,7 @@ import butterknife.Unbinder;
 import by.intervale.akella266.rssreader.R;
 import by.intervale.akella266.rssreader.data.News;
 import by.intervale.akella266.rssreader.di.ActivityScoped;
+import by.intervale.akella266.rssreader.util.SourceChangedEvent;
 
 @ActivityScoped
 public class MainFragment extends Fragment implements MainContract.View{
@@ -40,14 +46,16 @@ public class MainFragment extends Fragment implements MainContract.View{
     @Inject
     public MainFragment() {}
 
-    public static MainFragment newInstance(){
-        return new MainFragment();
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new MainAdapter(getContext());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -70,17 +78,18 @@ public class MainFragment extends Fragment implements MainContract.View{
                 ContextCompat.getColor(getActivity(), R.color.colorAccent),
                 ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
         );
-        // Set the scrolling view in the custom SwipeRefreshLayout.
+
         mRefreshLayout.setmScrollChild(mRecycler);
 
-        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mPresenter.loadNews(false);
-            }
-        });
+        mRefreshLayout.setOnRefreshListener(() -> mPresenter.loadNews(false));
 
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -97,6 +106,7 @@ public class MainFragment extends Fragment implements MainContract.View{
 
     @Override
     public void showNews(List<News> news) {
+        mRecycler.getLayoutManager().scrollToPosition(0);
         mAdapter.setNews(news);
     }
 
@@ -105,12 +115,7 @@ public class MainFragment extends Fragment implements MainContract.View{
         if (getView() == null) {
             return;
         }
-        mRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mRefreshLayout.setRefreshing(active);
-            }
-        });
+        mRefreshLayout.post(() -> mRefreshLayout.setRefreshing(active));
     }
 
     @Override
@@ -121,5 +126,12 @@ public class MainFragment extends Fragment implements MainContract.View{
     @Override
     public void showError(String message) {
         Snackbar.make(mRecycler, message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSourceChanged(SourceChangedEvent event){
+        String sourceUrl = event.getSourceUrl();
+        mPresenter.setSource(sourceUrl);
+        mPresenter.loadNews(true);
     }
 }

@@ -1,6 +1,7 @@
 package by.intervale.akella266.rssreader.views.main;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -9,11 +10,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import org.greenrobot.eventbus.EventBus;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import by.intervale.akella266.rssreader.R;
+import by.intervale.akella266.rssreader.util.SourceChangedEvent;
 import dagger.Lazy;
 import dagger.android.support.DaggerAppCompatActivity;
 
@@ -66,18 +70,20 @@ public class MainActivity extends DaggerAppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_tut_by:{
+                EventBus.getDefault().post(new SourceChangedEvent(getString(R.string.source_tutby)));
                 Snackbar.make(mDrawer,R.string.nav_item_tut_by, Snackbar.LENGTH_SHORT).show();
                 break;
             }
             case R.id.nav_onliner_by:{
+                EventBus.getDefault().post(new SourceChangedEvent(getString(R.string.source_onliner)));
                 Snackbar.make(mDrawer,R.string.nav_item_onliner, Snackbar.LENGTH_SHORT).show();
                 break;
             }
             case R.id.nav_lenta_ru:{
+                EventBus.getDefault().post(new SourceChangedEvent(getString(R.string.source_lenta)));
                 Snackbar.make(mDrawer,R.string.nav_item_lenta, Snackbar.LENGTH_SHORT).show();
                 break;
             }

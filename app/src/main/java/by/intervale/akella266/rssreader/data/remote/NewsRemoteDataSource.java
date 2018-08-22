@@ -14,30 +14,24 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import by.intervale.akella266.rssreader.BuildConfig;
 import by.intervale.akella266.rssreader.data.News;
 import by.intervale.akella266.rssreader.data.NewsDataSource;
-import by.intervale.akella266.rssreader.data.remote.api.ApiService;
 
 @Singleton
 public class NewsRemoteDataSource implements NewsDataSource {
 
-    private ApiService mApiService;
-
     @Inject
-    NewsRemoteDataSource(ApiService apiService){
-        this.mApiService = apiService;
-    }
+    NewsRemoteDataSource(){}
 
     @SuppressLint("CheckResult")
     @Override
-    public void getNews(@NonNull final LoadNewsCallback callback) {
+    public void getNews(@NonNull String source, @NonNull final LoadNewsCallback callback) {
         Parser parser = new Parser();
-        parser.execute(BuildConfig.API_URL);
+        parser.execute(source);
         parser.onFinish(new Parser.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(ArrayList<Article> list) {
-                callback.onNewsLoaded(convertArticleToNews(list));
+                callback.onNewsLoaded(convertArticleToNews(source.split("/")[2], list));
             }
 
             @Override
@@ -48,12 +42,12 @@ public class NewsRemoteDataSource implements NewsDataSource {
     }
 
     @Override
-    public void getNews(@NonNull String id, @NonNull GetNewsCallback callback) {
+    public void getNews(@NonNull String source, @NonNull String id, @NonNull GetNewsCallback callback) {
 
     }
 
     @Override
-    public void saveNews(News news) {
+    public void saveNews(@NonNull String source, News news) {
 
     }
 
@@ -67,7 +61,7 @@ public class NewsRemoteDataSource implements NewsDataSource {
 
     }
 
-    private List<News> convertArticleToNews(ArrayList<Article> articles){
+    private List<News> convertArticleToNews(String source, ArrayList<Article> articles){
         List<News> news = new ArrayList<>();
         for(Article article : articles){
             String descr = Html.fromHtml(article.getDescription()).toString();
@@ -78,7 +72,7 @@ public class NewsRemoteDataSource implements NewsDataSource {
                     article.getImage(),
                     descr,
                     article.getPubDate(),
-                    "onliner.by",
+                    source,
                     article.getLink(),
                     article.getCategories()
             ));

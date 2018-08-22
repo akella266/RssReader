@@ -1,6 +1,6 @@
 package by.intervale.akella266.rssreader.views.main;
 
-public enum NewsFilteringType {
+public enum NewsFilterType {
     ONLINER,
     TUT,
     LENTA

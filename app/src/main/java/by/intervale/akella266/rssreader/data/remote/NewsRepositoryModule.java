@@ -3,7 +3,6 @@ package by.intervale.akella266.rssreader.data.remote;
 import javax.inject.Singleton;
 
 import by.intervale.akella266.rssreader.data.NewsDataSource;
-import by.intervale.akella266.rssreader.data.remote.api.ApiService;
 import dagger.Binds;
 import dagger.Module;
 
