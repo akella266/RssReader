@@ -9,6 +9,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,17 +38,25 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void loadNews(final boolean showLoadingUI){
-        if(isFirstLoad){
-            mSourceUrl = mContext.getString(R.string.source_tutby);
-            isFirstLoad = false;
-        }
-
         if (showLoadingUI && mView != null){
             mView.showLoadingIndicator(true);
         }
 
         if (!checkNetworkAvailable()){
-            mView.showError("Интернет недоступен");
+            mView.showError(mContext.getString(R.string.error_no_connection));
+            mNewsRepository.getTasksFromLocalDataSource(mSourceUrl, new NewsDataSource.LoadNewsCallback() {
+                @Override
+                public void onNewsLoaded(List<News> news) {
+                    Collections.sort(news, (news1, t1) -> (-1)*news1.getDate().compareTo(t1.getDate()));
+                    mView.showNews(news);
+                    mView.showLoadingIndicator(false);
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+                    mView.showError(mContext.getString(R.string.error_read_from_database));
+                }
+            });
             return;
         }
 
@@ -60,7 +69,7 @@ public class MainPresenter implements MainContract.Presenter {
 
             @Override
             public void onDataNotAvailable() {
-                mView.showError("Сервер недоступен");
+                mView.showError(mContext.getString(R.string.error_server_not_respond));
             }
         });
     }
@@ -68,7 +77,11 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void takeView(MainContract.View view) {
         mView = view;
-        loadNews(true);
+        if(isFirstLoad){
+            mSourceUrl = mContext.getString(R.string.source_tutby);
+            isFirstLoad = false;
+            loadNews(true);
+        }
     }
 
     @Override
@@ -97,5 +110,10 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void setSource(String source) {
         mSourceUrl = source;
+    }
+
+    @Override
+    public void openNewsDetails(News news) {
+        mView.showNewsDetails(news);
     }
 }

@@ -26,17 +26,21 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 
     private Context mContext;
     private List<News> mNews;
+    private OnItemClickListener mListener;
 
-    public MainAdapter(Context mContext) {
+    public MainAdapter(Context mContext, OnItemClickListener listener) {
         this.mContext = mContext;
         this.mNews = new ArrayList<>();
+        this.mListener = listener;
     }
 
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_item, parent, false);
-        return new MainViewHolder(view);
+        MainViewHolder holder = new MainViewHolder(view);
+        view.setOnClickListener(view1 -> mListener.onItemClick(mNews.get(holder.getAdapterPosition())));
+        return holder;
     }
 
     @Override

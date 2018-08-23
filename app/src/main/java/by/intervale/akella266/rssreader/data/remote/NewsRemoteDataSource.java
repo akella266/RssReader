@@ -8,6 +8,7 @@ import com.prof.rssparser.Article;
 import com.prof.rssparser.Parser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,9 +20,6 @@ import by.intervale.akella266.rssreader.data.NewsDataSource;
 
 @Singleton
 public class NewsRemoteDataSource implements NewsDataSource {
-
-    @Inject
-    NewsRemoteDataSource(){}
 
     @SuppressLint("CheckResult")
     @Override
@@ -42,12 +40,12 @@ public class NewsRemoteDataSource implements NewsDataSource {
     }
 
     @Override
-    public void getNews(@NonNull String source, @NonNull String id, @NonNull GetNewsCallback callback) {
+    public void getNews(@NonNull String id, @NonNull GetNewsCallback callback) {
 
     }
 
     @Override
-    public void saveNews(@NonNull String source, News news) {
+    public void saveNews(List<News> news) {
 
     }
 
@@ -57,7 +55,7 @@ public class NewsRemoteDataSource implements NewsDataSource {
     }
 
     @Override
-    public void clearNews() {
+    public void clearNews(@NonNull String source) {
 
     }
 
@@ -65,7 +63,8 @@ public class NewsRemoteDataSource implements NewsDataSource {
         List<News> news = new ArrayList<>();
         for(Article article : articles){
             String descr = Html.fromHtml(article.getDescription()).toString();
-            descr = descr.substring(1).replaceAll("\n", "");
+            descr = descr.replaceAll("\n", "");
+            String url = article.getLink();
             news.add(new News(
                     UUID.randomUUID().toString(),
                     article.getTitle(),
@@ -73,7 +72,7 @@ public class NewsRemoteDataSource implements NewsDataSource {
                     descr,
                     article.getPubDate(),
                     source,
-                    article.getLink(),
+                    url,
                     article.getCategories()
             ));
         }

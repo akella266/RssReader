@@ -6,7 +6,7 @@ import javax.inject.Singleton;
 
 import by.intervale.akella266.rssreader.BaseApplication;
 import by.intervale.akella266.rssreader.data.NewsRepository;
-import by.intervale.akella266.rssreader.data.remote.NewsRepositoryModule;
+import by.intervale.akella266.rssreader.data.NewsRepositoryModule;
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjector;

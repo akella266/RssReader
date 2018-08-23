@@ -18,5 +18,6 @@ public interface MainContract {
         void setFiltering(NewsFilterType type);
         boolean checkNetworkAvailable();
         void setSource(String source);
+        void openNewsDetails(News news);
     }
 }

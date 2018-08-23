@@ -1,5 +1,6 @@
 package by.intervale.akella266.rssreader.views.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,6 +30,7 @@ import by.intervale.akella266.rssreader.R;
 import by.intervale.akella266.rssreader.data.News;
 import by.intervale.akella266.rssreader.di.ActivityScoped;
 import by.intervale.akella266.rssreader.util.SourceChangedEvent;
+import by.intervale.akella266.rssreader.views.newsDetails.DetailsActivity;
 
 @ActivityScoped
 public class MainFragment extends Fragment implements MainContract.View{
@@ -49,7 +51,7 @@ public class MainFragment extends Fragment implements MainContract.View{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new MainAdapter(getContext());
+        mAdapter = new MainAdapter(getContext(), news -> mPresenter.openNewsDetails(news));
     }
 
     @Override
@@ -80,9 +82,7 @@ public class MainFragment extends Fragment implements MainContract.View{
         );
 
         mRefreshLayout.setmScrollChild(mRecycler);
-
         mRefreshLayout.setOnRefreshListener(() -> mPresenter.loadNews(false));
-
         return view;
     }
 
@@ -120,12 +120,14 @@ public class MainFragment extends Fragment implements MainContract.View{
 
     @Override
     public void showNewsDetails(News news) {
-
+        Intent intent = new Intent(getContext(), DetailsActivity.class);
+        intent.putExtra(DetailsActivity.EXTRA_NEWS_ID, news.getId());
+        startActivity(intent);
     }
 
     @Override
     public void showError(String message) {
-        Snackbar.make(mRecycler, message, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(this.getView(), message, Snackbar.LENGTH_SHORT).show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

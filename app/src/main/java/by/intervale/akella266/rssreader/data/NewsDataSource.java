@@ -21,8 +21,8 @@ public interface NewsDataSource {
     }
 
     void getNews(@NonNull String source, @NonNull LoadNewsCallback callback);
-    void getNews(@NonNull String source, @NonNull String id, @NonNull GetNewsCallback callback);
-    void saveNews(@NonNull String source, News news);
+    void getNews(@NonNull String id, @NonNull GetNewsCallback callback);
+    void saveNews(List<News> news);
     void refreshNews();
-    void clearNews();
+    void clearNews(@NonNull String source);
 }

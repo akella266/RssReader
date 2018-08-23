@@ -24,6 +24,8 @@ import dagger.android.support.DaggerAppCompatActivity;
 public class MainActivity extends DaggerAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String CURRENT_SOURCE = "CURRENT_SOURCE";
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.drawer_layout)
@@ -32,14 +34,15 @@ public class MainActivity extends DaggerAppCompatActivity
     NavigationView mNavigationView;
     @Inject
     Lazy<MainFragment> mMainFragmentProvider;
+    private int mLastSelectedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         setSupportActionBar(mToolbar);
+        mLastSelectedItem = 0;
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -55,6 +58,19 @@ public class MainActivity extends DaggerAppCompatActivity
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, mainFragment).commit();
         }
+
+
+        if (savedInstanceState != null){
+            mLastSelectedItem = (int)savedInstanceState.getSerializable(CURRENT_SOURCE);
+            mNavigationView.getMenu().getItem(mLastSelectedItem).setChecked(true);
+        }
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(CURRENT_SOURCE, mLastSelectedItem);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -74,24 +90,26 @@ public class MainActivity extends DaggerAppCompatActivity
         switch (item.getItemId()){
             case R.id.nav_tut_by:{
                 EventBus.getDefault().post(new SourceChangedEvent(getString(R.string.source_tutby)));
-                Snackbar.make(mDrawer,R.string.nav_item_tut_by, Snackbar.LENGTH_SHORT).show();
+                mLastSelectedItem = 0;
                 break;
             }
             case R.id.nav_onliner_by:{
                 EventBus.getDefault().post(new SourceChangedEvent(getString(R.string.source_onliner)));
-                Snackbar.make(mDrawer,R.string.nav_item_onliner, Snackbar.LENGTH_SHORT).show();
+                mLastSelectedItem = 1;
                 break;
             }
             case R.id.nav_lenta_ru:{
                 EventBus.getDefault().post(new SourceChangedEvent(getString(R.string.source_lenta)));
-                Snackbar.make(mDrawer,R.string.nav_item_lenta, Snackbar.LENGTH_SHORT).show();
+                mLastSelectedItem = 2;
                 break;
             }
             case R.id.nav_offer_news:{
+                mLastSelectedItem = 0;
                 Snackbar.make(mDrawer,R.string.nav_item_offer_news, Snackbar.LENGTH_SHORT).show();
                 break;
             }
             case R.id.nav_settings:{
+                mLastSelectedItem = 0;
                 Snackbar.make(mDrawer,R.string.nav_item_settings, Snackbar.LENGTH_SHORT).show();
                 break;
             }

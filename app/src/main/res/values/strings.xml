@@ -12,4 +12,9 @@
     <string name="nav_item_offer_news">Предложить новость</string>
     <string name="nav_item_settings">Настройки</string>
     <string name="nav_item_about">О нас</string>
+
+    <string name="error_invalid_url">Ошибка в ссылке</string>
+    <string name="error_no_connection">Интернет недоступен</string>
+    <string name="error_server_not_respond">Сервер недоступен</string>
+    <string name="error_read_from_database">Ошибка при чтении из базы данных</string>
 </resources>
