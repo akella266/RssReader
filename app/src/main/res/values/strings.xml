@@ -4,6 +4,8 @@
     <string name="source_tutby">http://news.tut.by/rss</string>
 
     <string name="app_name">RssReader</string>
+    <string name="app_name_rss">Rss</string>
+    <string name="app_name_reader">Reader</string>
     <string name="navigation_drawer_open">Открыть боковую панель</string>
     <string name="navigation_drawer_close">Закрыть боковую панель</string>
     <string name="nav_item_tut_by">TUT.BY</string>
@@ -27,11 +29,4 @@
         <item>Финансы</item>
         <item>Спорт</item>
     </string-array>
-    <!--<string name="tab_in_world">В мире</string>-->
-    <!--<string name="tab_society">Общество</string>-->
-    <!--<string name="tab_reality">Недвижимость</string>-->
-    <!--<string name="tab_auto">Авто</string>-->
-    <!--<string name="tab_tech">Технологии</string>-->
-    <!--<string name="tab_finance">Финансы</string>-->
-    <!--<string name="tab_sport">Спорт</string>-->
 </resources>

@@ -37,7 +37,7 @@
             android:layout_alignParentStart="true"
             android:background="@color/colorPrimary"
             app:tabGravity="fill"
-            app:tabMode="scrollable"
+            app:tabMode="fixed"
             app:tabSelectedTextColor="@android:color/white"
             app:tabTextColor="@android:color/white">
 
@@ -45,43 +45,43 @@
                 android:id="@+id/tab_in_world"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Мир" />
+                android:icon="@drawable/ic_in_world" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tab_society"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Общество" />
+                android:icon="@drawable/ic_society"/>
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tab_reality"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Недвижимость" />
+                android:icon="@drawable/ic_reality" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tab_auto"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Авто" />
+                android:icon="@drawable/ic_auto" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tab_tech"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Технологии" />
+                android:icon="@drawable/ic_tech" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tab_finance"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Финансы" />
+                android:icon="@drawable/ic_finance" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tab_sport"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Спорт" />
+                android:icon="@drawable/ic_sport" />
         </android.support.design.widget.TabLayout>
     </RelativeLayout>
 </by.intervale.akella266.rssreader.views.main.ScrollChildSwipeRefreshLayout>
