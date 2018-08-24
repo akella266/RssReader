@@ -3,6 +3,7 @@ package by.intervale.akella266.rssreader.data;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +50,7 @@ public class NewsRepository implements NewsDataSource {
 
     @Override
     public void saveNews(List<News> news) {
-
+        mNewsLocalDataSource.saveNews(news);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class NewsRepository implements NewsDataSource {
     }
 
     @Override
-    public void clearNews(@NonNull String source) {
+    public void clearNews(@NonNull String source, @NonNull OnClearingCompleteCallback callback) {
 
     }
 
@@ -66,9 +67,8 @@ public class NewsRepository implements NewsDataSource {
         mNewsRemoteDataSource.getNews(source, new LoadNewsCallback() {
             @Override
             public void onNewsLoaded(List<News> news) {
-                mNewsLocalDataSource.clearNews(source);
-                mNewsLocalDataSource.saveNews(news);
-                callback.onNewsLoaded(news);
+                mNewsLocalDataSource.clearNews(source, () -> saveNews(news));
+                callback.onNewsLoaded(new ArrayList<>(news));
             }
 
             @Override

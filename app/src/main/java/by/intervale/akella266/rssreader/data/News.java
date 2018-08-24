@@ -1,22 +1,38 @@
 package by.intervale.akella266.rssreader.data;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+import android.support.annotation.NonNull;
+
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
+import by.intervale.akella266.rssreader.data.local.CategoriesConverter;
+import by.intervale.akella266.rssreader.data.local.DateConverter;
+
+@Entity(tableName = "news")
 public class News {
 
+    @PrimaryKey
+    @NonNull
     private String id;
     private String title;
     private String image;
     private String description;
+    @TypeConverters(DateConverter.class)
     private Date date;
     private String source;
     private String link;
+    @TypeConverters(CategoriesConverter.class)
     private List<String> mCategories;
 
-    public News() { }
+    public News() {
+        id = UUID.randomUUID().toString();
+    }
 
-    public News(String id, String title, String image, String description, Date date, String source, String link, List<String> mCategories) {
+    public News(@NonNull String id, String title, String image, String description, Date date, String source, String link, List<String> mCategories) {
         this.id = id;
         this.title = title;
         this.image = image;
@@ -27,11 +43,12 @@ public class News {
         this.mCategories = mCategories;
     }
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
@@ -83,11 +100,11 @@ public class News {
         this.link = link;
     }
 
-    public List<String> getmCategories() {
+    public List<String> getCategories() {
         return mCategories;
     }
 
-    public void setmCategories(List<String> mCategories) {
+    public void setCategories(List<String> mCategories) {
         this.mCategories = mCategories;
     }
 }

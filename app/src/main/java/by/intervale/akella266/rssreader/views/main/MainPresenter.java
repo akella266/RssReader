@@ -19,7 +19,11 @@ import by.intervale.akella266.rssreader.data.News;
 import by.intervale.akella266.rssreader.data.NewsDataSource;
 import by.intervale.akella266.rssreader.data.NewsRepository;
 import by.intervale.akella266.rssreader.di.ActivityScoped;
+import by.intervale.akella266.rssreader.util.CategoriesUtil;
 import by.intervale.akella266.rssreader.util.SourceChangedEvent;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.functions.Predicate;
 
 @ActivityScoped
 public class MainPresenter implements MainContract.Presenter {
@@ -29,27 +33,30 @@ public class MainPresenter implements MainContract.Presenter {
     private final NewsRepository mNewsRepository;
     private boolean isFirstLoad = true;
     private String mSourceUrl;
+    private NewsFilterType mFilteringType;
 
     @Inject
     MainPresenter(Context context, NewsRepository newsRepository){
         this.mContext = context;
         this.mNewsRepository = newsRepository;
+        mFilteringType = NewsFilterType.IN_WORLD;
     }
 
     @Override
-    public void loadNews(final boolean showLoadingUI){
+    public void loadNews(final boolean showLoadingUI, boolean filteringUpdate){
         if (showLoadingUI && mView != null){
             mView.showLoadingIndicator(true);
         }
 
-        if (!checkNetworkAvailable()){
-            mView.showError(mContext.getString(R.string.error_no_connection));
+        if (!checkNetworkAvailable() || filteringUpdate){
+            if (!filteringUpdate)
+                mView.showError(mContext.getString(R.string.error_no_connection));
+
             mNewsRepository.getTasksFromLocalDataSource(mSourceUrl, new NewsDataSource.LoadNewsCallback() {
                 @Override
                 public void onNewsLoaded(List<News> news) {
                     Collections.sort(news, (news1, t1) -> (-1)*news1.getDate().compareTo(t1.getDate()));
-                    mView.showNews(news);
-                    mView.showLoadingIndicator(false);
+                    passNews(news);
                 }
 
                 @Override
@@ -63,8 +70,7 @@ public class MainPresenter implements MainContract.Presenter {
         mNewsRepository.getNews(mSourceUrl, new NewsDataSource.LoadNewsCallback() {
             @Override
             public void onNewsLoaded(List<News> news) {
-                mView.showNews(news);
-                mView.showLoadingIndicator(false);
+                passNews(news);
             }
 
             @Override
@@ -74,13 +80,32 @@ public class MainPresenter implements MainContract.Presenter {
         });
     }
 
+    private void passNews(List<News> news){
+        String category = mContext.getResources()
+                .getStringArray(R.array.categories)[mFilteringType.getIndex()];
+        List<String> cats = CategoriesUtil.getCategories(mContext, mFilteringType);
+        for(int i = 0; i < news.size(); i++){
+            if (!cats.contains(news.get(i).getCategories().get(0))){
+                news.remove(i);
+                i--;
+            }
+        }
+        mView.showTitle(category);
+        if (news.isEmpty())
+            mView.showNoNews();
+        else {
+            mView.showNews(news);
+        }
+        mView.showLoadingIndicator(false);
+    }
+
     @Override
     public void takeView(MainContract.View view) {
         mView = view;
         if(isFirstLoad){
             mSourceUrl = mContext.getString(R.string.source_tutby);
             isFirstLoad = false;
-            loadNews(true);
+            loadNews(true, false);
         }
     }
 
@@ -91,7 +116,8 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void setFiltering(NewsFilterType type) {
-
+        this.mFilteringType = type;
+        loadNews(false, true);
     }
 
     @Override

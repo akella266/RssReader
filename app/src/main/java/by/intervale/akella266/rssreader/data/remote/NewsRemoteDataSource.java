@@ -55,7 +55,7 @@ public class NewsRemoteDataSource implements NewsDataSource {
     }
 
     @Override
-    public void clearNews(@NonNull String source) {
+    public void clearNews(@NonNull String source, @NonNull OnClearingCompleteCallback callback) {
 
     }
 

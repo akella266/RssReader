@@ -20,9 +20,13 @@ public interface NewsDataSource {
         void onDataNotAvailable();
     }
 
+    interface OnClearingCompleteCallback{
+        void onComplete();
+    }
+
     void getNews(@NonNull String source, @NonNull LoadNewsCallback callback);
     void getNews(@NonNull String id, @NonNull GetNewsCallback callback);
     void saveNews(List<News> news);
     void refreshNews();
-    void clearNews(@NonNull String source);
+    void clearNews(@NonNull String source, @NonNull OnClearingCompleteCallback callback);
 }

@@ -5,15 +5,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -38,9 +42,13 @@ public class MainFragment extends Fragment implements MainContract.View{
     private Unbinder unbinder;
     @BindView(R.id.rv_news)
     RecyclerView mRecycler;
+    @BindView(R.id.text_view_no_news)
+    TextView mTextViewNoContent;
     MainAdapter mAdapter;
     @BindView(R.id.refresh_layout)
     ScrollChildSwipeRefreshLayout mRefreshLayout;
+    @BindView(R.id.tab_layout)
+    TabLayout mTabs;
 
     @Inject
     MainContract.Presenter mPresenter;
@@ -82,7 +90,53 @@ public class MainFragment extends Fragment implements MainContract.View{
         );
 
         mRefreshLayout.setmScrollChild(mRecycler);
-        mRefreshLayout.setOnRefreshListener(() -> mPresenter.loadNews(false));
+        mRefreshLayout.setOnRefreshListener(() -> mPresenter.loadNews(true, false));
+
+        mTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()){
+                    case 0:{
+                        mPresenter.setFiltering(NewsFilterType.IN_WORLD);
+                        break;
+                    }
+                    case 1:{
+                        mPresenter.setFiltering(NewsFilterType.SOCIETY);
+                        break;
+                    }
+                    case 2:{
+                        mPresenter.setFiltering(NewsFilterType.REALITY);
+                        break;
+                    }
+                    case 3:{
+                        mPresenter.setFiltering(NewsFilterType.AUTO);
+                        break;
+                    }
+                    case 4:{
+                        mPresenter.setFiltering(NewsFilterType.TECH);
+                        break;
+                    }
+                    case 5:{
+                        mPresenter.setFiltering(NewsFilterType.FINANCE);
+                        break;
+                    }
+                    case 6:{
+                        mPresenter.setFiltering(NewsFilterType.SPORT);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         return view;
     }
 
@@ -106,8 +160,21 @@ public class MainFragment extends Fragment implements MainContract.View{
 
     @Override
     public void showNews(List<News> news) {
+        mTextViewNoContent.setVisibility(View.GONE);
+        mRecycler.setVisibility(View.VISIBLE);
         mRecycler.getLayoutManager().scrollToPosition(0);
         mAdapter.setNews(news);
+    }
+
+    @Override
+    public void showTitle(String title) {
+        AppCompatActivity activity;
+        if ((activity = (AppCompatActivity)getActivity()) != null){
+            ActionBar bar = activity.getSupportActionBar();
+            if(bar != null){
+                bar.setTitle(title);
+            }
+        }
     }
 
     @Override
@@ -130,10 +197,16 @@ public class MainFragment extends Fragment implements MainContract.View{
         Snackbar.make(this.getView(), message, Snackbar.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void showNoNews() {
+        mTextViewNoContent.setVisibility(View.VISIBLE);
+        mRecycler.setVisibility(View.GONE);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSourceChanged(SourceChangedEvent event){
         String sourceUrl = event.getSourceUrl();
         mPresenter.setSource(sourceUrl);
-        mPresenter.loadNews(true);
+        mPresenter.loadNews(true, false);
     }
 }

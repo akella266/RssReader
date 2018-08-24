@@ -17,4 +17,21 @@
     <string name="error_no_connection">Интернет недоступен</string>
     <string name="error_server_not_respond">Сервер недоступен</string>
     <string name="error_read_from_database">Ошибка при чтении из базы данных</string>
+    <string name="no_news">Новостей нет</string>
+    <string-array name="categories">
+        <item>В мире</item>
+        <item>Общество</item>
+        <item>Недвижимость</item>
+        <item>Авто</item>
+        <item>Технологии</item>
+        <item>Финансы</item>
+        <item>Спорт</item>
+    </string-array>
+    <!--<string name="tab_in_world">В мире</string>-->
+    <!--<string name="tab_society">Общество</string>-->
+    <!--<string name="tab_reality">Недвижимость</string>-->
+    <!--<string name="tab_auto">Авто</string>-->
+    <!--<string name="tab_tech">Технологии</string>-->
+    <!--<string name="tab_finance">Финансы</string>-->
+    <!--<string name="tab_sport">Спорт</string>-->
 </resources>
