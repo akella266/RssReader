@@ -4,6 +4,7 @@ import by.intervale.akella266.rssreader.views.main.MainActivity;
 import by.intervale.akella266.rssreader.views.main.MainModule;
 import by.intervale.akella266.rssreader.views.newsDetails.DetailsActivity;
 import by.intervale.akella266.rssreader.views.newsDetails.DetailsModule;
+import by.intervale.akella266.rssreader.views.offerNews.OfferModule;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
@@ -11,7 +12,7 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class ActivityBindingModule {
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = MainModule.class)
+    @ContributesAndroidInjector(modules = {MainModule.class, OfferModule.class})
     abstract MainActivity mainActivity();
 
     @ActivityScoped

@@ -43,7 +43,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-simplexml:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
 
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
@@ -65,7 +67,6 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
     implementation "android.arch.persistence.room:rxjava2:1.1.1"
 
-    implementation 'com.github.faruktoptas:RetrofitRssConverterFactory:0.0.2'
     implementation 'com.prof.rssparser:rssparser:1.4.1'
 
     implementation 'jp.wasabeef:glide-transformations:3.0.1'

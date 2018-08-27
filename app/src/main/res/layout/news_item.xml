@@ -19,9 +19,10 @@
         <ImageView
             android:id="@+id/image_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:minHeight="194dp"/>
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            />
 
         <TextView
             android:id="@+id/text_view_title"

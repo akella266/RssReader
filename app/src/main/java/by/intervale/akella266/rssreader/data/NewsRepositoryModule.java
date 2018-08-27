@@ -6,6 +6,8 @@ import android.arch.persistence.room.Room;
 import javax.inject.Singleton;
 
 import by.intervale.akella266.rssreader.data.NewsDataSource;
+import by.intervale.akella266.rssreader.data.api.ApiModule;
+import by.intervale.akella266.rssreader.data.api.ApiService;
 import by.intervale.akella266.rssreader.data.local.Local;
 import by.intervale.akella266.rssreader.data.local.NewsDao;
 import by.intervale.akella266.rssreader.data.local.NewsDatabase;
@@ -33,10 +35,10 @@ public class NewsRepositoryModule {
     }
 
     @Singleton
-    @Provides
     @Remote
-    NewsDataSource provideNewsRemoteDataSource(){
-        return new NewsRemoteDataSource();
+    @Provides
+    NewsDataSource provideNewsRemoteDataSource(ApiService apiService){
+        return new NewsRemoteDataSource(apiService);
     }
 
     @Singleton

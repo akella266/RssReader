@@ -7,15 +7,8 @@ import dagger.android.DaggerApplication;
 
 public class BaseApplication extends DaggerApplication {
 
-//    @Inject
-//    NewsRepository mNewsRepository;
-
     @Override
     protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
         return DaggerAppComponent.builder().application(this).build();
     }
-
-//    public NewsRepository getNewsRepository(){
-//        return mNewsRepository;
-//    }
 }

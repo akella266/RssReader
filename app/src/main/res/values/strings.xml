@@ -1,7 +1,7 @@
 <resources>
-    <string name="source_onliner">http://onliner.by/feed</string>
-    <string name="source_lenta">http://lenta.ru/rss</string>
-    <string name="source_tutby">http://news.tut.by/rss</string>
+    <string name="source_onliner">http://onliner.by/feed/</string>
+    <string name="source_lenta">http://lenta.ru/rss/</string>
+    <string name="source_tutby">http://news.tut.by/rss/</string>
 
     <string name="app_name">RssReader</string>
     <string name="app_name_rss">Rss</string>
@@ -20,6 +20,12 @@
     <string name="error_server_not_respond">Сервер недоступен</string>
     <string name="error_read_from_database">Ошибка при чтении из базы данных</string>
     <string name="no_news">Новостей нет</string>
+    <string name="hint_text">Текст новости</string>
+    <string name="send">Отправить</string>
+    <string name="hint_text_phone_number">Номер телефона</string>
+    <string name="hint_text_email">email</string>
+    <string name="or">или</string>
+    <string name="contact_info">Контактная информация</string>
     <string-array name="categories">
         <item>В мире</item>
         <item>Общество</item>

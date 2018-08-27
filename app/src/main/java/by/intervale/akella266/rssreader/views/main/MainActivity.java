@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import by.intervale.akella266.rssreader.R;
 import by.intervale.akella266.rssreader.util.SourceChangedEvent;
+import by.intervale.akella266.rssreader.views.offerNews.OfferFragment;
 import dagger.Lazy;
 import dagger.android.support.DaggerAppCompatActivity;
 
@@ -34,6 +37,8 @@ public class MainActivity extends DaggerAppCompatActivity
     NavigationView mNavigationView;
     @Inject
     Lazy<MainFragment> mMainFragmentProvider;
+    @Inject
+    Lazy<OfferFragment> mOfferFragmentProvider;
     private int mLastSelectedItem;
 
     @Override
@@ -51,14 +56,14 @@ public class MainActivity extends DaggerAppCompatActivity
 
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        MainFragment mainFragment
-                = (MainFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (mainFragment == null){
-            mainFragment = mMainFragmentProvider.get();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, mainFragment).commit();
-        }
 
+        loadMainFragment();
+//        MainFragment mainFragment
+//                = (MainFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+//        if (mainFragment == null){
+//            mainFragment = mMainFragmentProvider.get();
+//            loadFragment(mainFragment);
+//        }
 
         if (savedInstanceState != null){
             mLastSelectedItem = (int)savedInstanceState.getSerializable(CURRENT_SOURCE);
@@ -89,23 +94,32 @@ public class MainActivity extends DaggerAppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_tut_by:{
+                loadMainFragment();
                 EventBus.getDefault().post(new SourceChangedEvent(getString(R.string.source_tutby)));
                 mLastSelectedItem = 0;
                 break;
             }
             case R.id.nav_onliner_by:{
+                loadMainFragment();
                 EventBus.getDefault().post(new SourceChangedEvent(getString(R.string.source_onliner)));
                 mLastSelectedItem = 1;
                 break;
             }
             case R.id.nav_lenta_ru:{
+                loadMainFragment();
                 EventBus.getDefault().post(new SourceChangedEvent(getString(R.string.source_lenta)));
                 mLastSelectedItem = 2;
                 break;
             }
             case R.id.nav_offer_news:{
                 mLastSelectedItem = 0;
-                Snackbar.make(mDrawer,R.string.nav_item_offer_news, Snackbar.LENGTH_SHORT).show();
+                OfferFragment offerFragment
+                        = (OfferFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                if (offerFragment == null) {
+                    offerFragment = mOfferFragmentProvider.get();
+                    loadFragment(offerFragment);
+                }
+//                Snackbar.make(mDrawer,R.string.nav_item_offer_news, Snackbar.LENGTH_SHORT).show();
                 break;
             }
             case R.id.nav_settings:{
@@ -117,5 +131,26 @@ public class MainActivity extends DaggerAppCompatActivity
 
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void loadMainFragment(){
+        MainFragment mainFragment
+                = (MainFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (mainFragment == null){
+            mainFragment = mMainFragmentProvider.get();
+            loadFragment(mainFragment);
+        }
+    }
+
+    private boolean loadFragment(Fragment fragment){
+        if (fragment != null){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
     }
 }
