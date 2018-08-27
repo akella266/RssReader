@@ -20,7 +20,7 @@
             android:id="@+id/image_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
+            android:scaleType="fitStart"
             android:adjustViewBounds="true"
             />
 
@@ -41,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_offset"
+            android:layout_marginRight="@dimen/text_offset"
             android:textSize="@dimen/body_text_size"
             tools:text="Description"/>
 
