@@ -21,8 +21,6 @@ public class ApiModule {
         return new Retrofit.Builder()
                 .baseUrl("http://google.com/")
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//                .addConverterFactory(SimpleXmlConverterFactory.createNonStrict(
-//                        new Persister(new AnnotationStrategy())))
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build().create(ApiService.class);
     }

@@ -56,12 +56,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
         if (news.getImage() != null) {
             if (holder.mImageView.getVisibility() == View.GONE)
                 holder.mImageView.setVisibility(View.VISIBLE);
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.placeholder(R.drawable.ic_launcher_foreground);
-            requestOptions.error(R.drawable.ic_launcher_foreground);
             Glide.with(mContext)
-                    .asDrawable()
-                    .apply(requestOptions)
                     .load(news.getImage())
                     .into(holder.mImageView);
         }

@@ -59,7 +59,8 @@ public class MainFragment extends Fragment implements MainContract.View{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new MainAdapter(getContext(), news -> mPresenter.openNewsDetails(news));
+        setRetainInstance(true);
+        mAdapter = new MainAdapter(getActivity().getApplicationContext(), news -> mPresenter.openNewsDetails(news));
     }
 
     @Override
@@ -203,7 +204,7 @@ public class MainFragment extends Fragment implements MainContract.View{
         mRecycler.setVisibility(View.GONE);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onSourceChanged(SourceChangedEvent event){
         String sourceUrl = event.getSourceUrl();
         mPresenter.setSource(sourceUrl);

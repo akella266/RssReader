@@ -12,5 +12,7 @@ public interface DetailsContract {
 
     interface Presenter extends BasePresenter<View>{
         void loadPage();
+        String getNewsId();
+        void setNewsId(String newsId);
     }
 }

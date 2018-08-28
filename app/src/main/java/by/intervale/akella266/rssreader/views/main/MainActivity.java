@@ -56,19 +56,13 @@ public class MainActivity extends DaggerAppCompatActivity
 
         mNavigationView.setNavigationItemSelectedListener(this);
 
-
-        loadMainFragment();
-//        MainFragment mainFragment
-//                = (MainFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-//        if (mainFragment == null){
-//            mainFragment = mMainFragmentProvider.get();
-//            loadFragment(mainFragment);
-//        }
-
         if (savedInstanceState != null){
             mLastSelectedItem = (int)savedInstanceState.getSerializable(CURRENT_SOURCE);
-            mNavigationView.getMenu().getItem(mLastSelectedItem).setChecked(true);
+            MenuItem menuItem = mNavigationView.getMenu().getItem(mLastSelectedItem);
+            mNavigationView.setCheckedItem(menuItem.getItemId());
         }
+        else loadMainFragment();
+
     }
 
 
@@ -95,35 +89,34 @@ public class MainActivity extends DaggerAppCompatActivity
         switch (item.getItemId()){
             case R.id.nav_tut_by:{
                 loadMainFragment();
-                EventBus.getDefault().post(new SourceChangedEvent(getString(R.string.source_tutby)));
+                EventBus.getDefault().postSticky(new SourceChangedEvent(getString(R.string.source_tutby)));
                 mLastSelectedItem = 0;
                 break;
             }
             case R.id.nav_onliner_by:{
                 loadMainFragment();
-                EventBus.getDefault().post(new SourceChangedEvent(getString(R.string.source_onliner)));
+                EventBus.getDefault().postSticky(new SourceChangedEvent(getString(R.string.source_onliner)));
                 mLastSelectedItem = 1;
                 break;
             }
             case R.id.nav_lenta_ru:{
                 loadMainFragment();
-                EventBus.getDefault().post(new SourceChangedEvent(getString(R.string.source_lenta)));
+                EventBus.getDefault().postSticky(new SourceChangedEvent(getString(R.string.source_lenta)));
                 mLastSelectedItem = 2;
                 break;
             }
             case R.id.nav_offer_news:{
-                mLastSelectedItem = 0;
-                OfferFragment offerFragment
-                        = (OfferFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-                if (offerFragment == null) {
+                mLastSelectedItem = 3;
+                Fragment offerFragment
+                        = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                if (offerFragment == null || !(offerFragment instanceof OfferFragment)) {
                     offerFragment = mOfferFragmentProvider.get();
                     loadFragment(offerFragment);
                 }
-//                Snackbar.make(mDrawer,R.string.nav_item_offer_news, Snackbar.LENGTH_SHORT).show();
                 break;
             }
             case R.id.nav_settings:{
-                mLastSelectedItem = 0;
+                mLastSelectedItem = 4;
                 Snackbar.make(mDrawer,R.string.nav_item_settings, Snackbar.LENGTH_SHORT).show();
                 break;
             }
@@ -134,9 +127,9 @@ public class MainActivity extends DaggerAppCompatActivity
     }
 
     private void loadMainFragment(){
-        MainFragment mainFragment
-                = (MainFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (mainFragment == null){
+        Fragment mainFragment
+                = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (mainFragment == null || !(mainFragment instanceof MainFragment)){
             mainFragment = mMainFragmentProvider.get();
             loadFragment(mainFragment);
         }

@@ -52,4 +52,14 @@ public class DetailsPresenter implements DetailsContract.Presenter{
     public void dropView() {
         this.mView = null;
     }
+
+    @Override
+    public String getNewsId() {
+        return mNewsId;
+    }
+
+    @Override
+    public void setNewsId(String newsId) {
+        this.mNewsId = newsId;
+    }
 }

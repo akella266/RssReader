@@ -18,6 +18,8 @@ public class DetailsActivity extends DaggerAppCompatActivity {
     Toolbar toolbar;
 
     @Inject
+    DetailsContract.Presenter mPresenter;
+    @Inject
     DetailsFragment injectedFragment;
 
     @Override
@@ -37,11 +39,23 @@ public class DetailsActivity extends DaggerAppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, fragment).commit();
         }
+
+        if (savedInstanceState != null){
+            String newsId = savedInstanceState.getString(EXTRA_NEWS_ID);
+            mPresenter.setNewsId(newsId);
+        }
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(EXTRA_NEWS_ID, mPresenter.getNewsId());
+
+        super.onSaveInstanceState(outState);
     }
 }

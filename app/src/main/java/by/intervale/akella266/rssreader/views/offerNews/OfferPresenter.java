@@ -28,4 +28,24 @@ public class OfferPresenter implements OfferContract.Presenter {
     public void dropView() {
         this.mView = null;
     }
+
+    @Override
+    public void openSending() {
+        mView.showSending();
+    }
+
+    @Override
+    public void closeSending() {
+        mView.closeSending();
+    }
+
+    @Override
+    public void openComplete() {
+        mView.showComplete();
+    }
+
+    @Override
+    public void initReset() {
+        mView.resetFields();
+    }
 }

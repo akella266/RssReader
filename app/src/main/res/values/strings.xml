@@ -19,6 +19,7 @@
     <string name="error_no_connection">Интернет недоступен</string>
     <string name="error_server_not_respond">Сервер недоступен</string>
     <string name="error_read_from_database">Ошибка при чтении из базы данных</string>
+    <string name="error_image_not_attached">Не удалось прикрепить изображение</string>
     <string name="no_news">Новостей нет</string>
     <string name="hint_text">Текст новости</string>
     <string name="send">Отправить</string>
@@ -35,4 +36,9 @@
         <item>Финансы</item>
         <item>Спорт</item>
     </string-array>
+
+    <string name="image_deleted">Изображение откреплено</string>
+    <string name="dialog_title">Отправление данных…</string>
+    <string name="dialog_message">Ожидайте, происходит отправление данных…</string>
+    <string name="sending_completed">Данные отправлены</string>
 </resources>

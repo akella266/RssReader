@@ -1,112 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <android.support.design.widget.TabLayout
+    android:layout_height="match_parent">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:tabGravity="fill"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="@android:color/white"
-        app:tabTextColor="@android:color/white">
+        android:orientation="vertical">
 
-        <android.support.design.widget.TabItem
-            android:id="@+id/tab_tutby"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/nav_item_tut_by"/>
-
-        <android.support.design.widget.TabItem
-            android:id="@+id/tab_onliner"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/nav_item_onliner" />
-
-        <android.support.design.widget.TabItem
-            android:id="@+id/tab_lenta"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/nav_item_lenta" />
-    </android.support.design.widget.TabLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_margin="@dimen/text_offset"
-        android:background="@drawable/border_offer">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/edit_text_news"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs_offer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:textSize="@dimen/body_text_size"
-            android:hint="@string/hint_text"/>
+            android:background="@color/colorPrimary"
+            android:layout_marginBottom="@dimen/default_offset"
+            app:tabGravity="fill"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextColor="@android:color/white">
 
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TabItem
+                android:id="@+id/tab_tutby"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/nav_item_tut_by"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/contact_info"
-        android:layout_marginLeft="@dimen/text_offset"
-        android:layout_marginRight="@dimen/text_offset"
-        android:layout_marginBottom="@dimen/text_offset"
-        android:textSize="@dimen/body_text_size"/>
+            <android.support.design.widget.TabItem
+                android:id="@+id/tab_onliner"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/nav_item_onliner" />
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/text_offset"
-        android:layout_marginRight="@dimen/text_offset"
-        android:background="@drawable/border_offer">
+            <android.support.design.widget.TabItem
+                android:id="@+id/tab_lenta"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/nav_item_lenta" />
+        </android.support.design.widget.TabLayout>
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/edit_text_phone"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            android:background="@drawable/border_offer"
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/text_offset"
+            android:layout_marginRight="@dimen/text_offset"
+            android:layout_marginBottom="@dimen/default_offset">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_text_news"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:textSize="@dimen/offer_text_size"
+                    android:minLines="1"
+                    android:lines="8"
+                    android:maxLines="16"
+                    android:scrollbars="vertical"
+                    android:hint="@string/hint_text"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/image_button_add_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/offer_text_size"
+                android:layout_marginRight="@dimen/default_offset"
+                android:layout_marginLeft="@dimen/default_offset"
+                android:src="@drawable/ic_photo"
+                style="@style/Base.TextAppearance.AppCompat.Widget.Button"/>
+
+        </LinearLayout>
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/body_text_size"
-            android:inputType="phone"
-            android:hint="@string/hint_text_phone_number"/>
+            android:text="@string/contact_info"
+            android:layout_marginLeft="@dimen/text_offset"
+            android:layout_marginRight="@dimen/text_offset"
+            android:layout_marginBottom="@dimen/default_offset"
+            android:textSize="@dimen/offer_text_size"/>
 
-    </android.support.design.widget.TextInputLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/or"
-        android:layout_margin="@dimen/text_offset"
-        android:textSize="@dimen/body_text_size"/>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/text_offset"
-        android:layout_marginRight="@dimen/text_offset"
-        android:background="@drawable/border_offer">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/edit_text_email"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:textSize="@dimen/body_text_size"
-            android:hint="@string/hint_text_email"/>
+            android:layout_marginLeft="@dimen/text_offset"
+            android:layout_marginRight="@dimen/text_offset"
+            android:layout_marginBottom="@dimen/default_offset"
+            android:background="@drawable/border_offer">
 
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_text_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/offer_text_size"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:hint="@string/hint_text_phone_number"/>
 
-    <Button
-        android:id="@+id/button_send"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/send"
-        android:layout_marginLeft="@dimen/text_offset"
-        android:layout_marginRight="@dimen/text_offset"
-        android:layout_marginTop="@dimen/text_offset"/>
+        </android.support.design.widget.TextInputLayout>
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/or"
+            android:layout_marginLeft="@dimen/text_offset"
+            android:layout_marginRight="@dimen/text_offset"
+            android:layout_marginBottom="@dimen/default_offset"
+            android:textSize="@dimen/offer_text_size"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_offset"
+            android:layout_marginRight="@dimen/text_offset"
+            android:layout_marginBottom="@dimen/default_offset"
+            android:background="@drawable/border_offer">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_text_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textSize="@dimen/offer_text_size"
+                android:maxLines="1"
+                android:hint="@string/hint_text_email"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/button_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:text="@string/send"
+            android:layout_marginTop="@dimen/default_offset"
+            android:layout_marginLeft="@dimen/button_offset"
+            android:layout_marginRight="@dimen/button_offset"
+            style="@style/Base.TextAppearance.AppCompat.Widget.Button.Colored"/>
+
+    </LinearLayout>
+</ScrollView>
