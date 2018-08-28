@@ -20,6 +20,12 @@
     <string name="error_server_not_respond">Сервер недоступен</string>
     <string name="error_read_from_database">Ошибка при чтении из базы данных</string>
     <string name="error_image_not_attached">Не удалось прикрепить изображение</string>
+    <string name="error_invalid_email">Некорректный email</string>
+    <string name="error_invalid_phone_number">Некорректный номер телефона</string>
+    <string name="error_email_phone_empty">Одно из полей контактной информации должно быть заполнено</string>
+    <string name="error_news_empty">Введите текст новости</string>
+
+
     <string name="no_news">Новостей нет</string>
     <string name="hint_text">Текст новости</string>
     <string name="send">Отправить</string>

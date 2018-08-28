@@ -75,7 +75,8 @@ public class MainPresenter implements MainContract.Presenter {
 
             @Override
             public void onDataNotAvailable() {
-                mView.showError(mContext.getString(R.string.error_server_not_respond));
+                if (mView != null)
+                    mView.showError(mContext.getString(R.string.error_server_not_respond));
             }
         });
     }

@@ -13,12 +13,16 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -38,7 +42,7 @@ import static android.app.Activity.RESULT_OK;
 public class OfferFragment extends Fragment
         implements OfferContract.View{
 
-    private static final int SERVICE_LATENCY_IN_MILLIS = 5000;
+    private static final int SERVICE_LATENCY_IN_MILLIS = 2000;
 
     Unbinder unbinder;
 
@@ -86,6 +90,8 @@ public class OfferFragment extends Fragment
                 showMessage(getString(R.string.image_deleted));
             }
         });
+
+        mEditTextPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         return view;
     }
 
@@ -108,7 +114,26 @@ public class OfferFragment extends Fragment
     }
 
     @OnClick(R.id.button_send)
-    void buttonSendClick(){
+    void buttonSendClick() {
+        if (mEditTextNews.getText().length() == 0){
+            showMessage(getString(R.string.error_news_empty));
+            return;
+        }
+        if (mEditTextEmail.getText().length() == 0 &&
+                mEditTextPhone.getText().length() == 0) {
+            showMessage(getString(R.string.error_email_phone_empty));
+            return;
+        }
+        if ((mEditTextPhone.getText().length() != 0 &&
+                !mPresenter.isValidePhoneNumber(mEditTextPhone.getText().toString()))) {
+            mEditTextPhone.setError(getString(R.string.error_invalid_phone_number));
+            return;
+        }
+        if (mEditTextEmail.getText().length() != 0 &&
+                !mPresenter.isValideEmail(mEditTextEmail.getText().toString())) {
+            mEditTextEmail.setError(getString(R.string.error_invalid_email));
+            return;
+        }
         mPresenter.openSending();
     }
 
@@ -163,6 +188,8 @@ public class OfferFragment extends Fragment
         mEditTextNews.setText("");
         mEditTextEmail.setText("");
         mEditTextPhone.setText("");
+        mSelectedImage = null;
+        mImageView.setImageResource(R.drawable.ic_photo);
     }
 
     @Override

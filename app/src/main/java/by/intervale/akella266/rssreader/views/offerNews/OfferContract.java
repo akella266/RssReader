@@ -17,5 +17,7 @@ public interface OfferContract {
         void closeSending();
         void openComplete();
         void initReset();
+        boolean isValideEmail(String email);
+        boolean isValidePhoneNumber(String phoneNumer);
     }
 }

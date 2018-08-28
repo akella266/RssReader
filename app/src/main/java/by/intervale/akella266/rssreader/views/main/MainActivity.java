@@ -116,7 +116,6 @@ public class MainActivity extends DaggerAppCompatActivity
                 break;
             }
             case R.id.nav_settings:{
-                mLastSelectedItem = 4;
                 Snackbar.make(mDrawer,R.string.nav_item_settings, Snackbar.LENGTH_SHORT).show();
                 break;
             }
