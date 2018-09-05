@@ -19,6 +19,6 @@ public abstract class OfferModule {
     @ActivityScoped
     @Binds abstract OfferContract.Presenter offerPresenter(OfferPresenter offerPresenter);
 
-    @FragmentScoped
+    @ActivityScoped
     @Binds abstract DialogFragment dialogFragment(LoadingDialogFragment loadingDialogFragment);
 }

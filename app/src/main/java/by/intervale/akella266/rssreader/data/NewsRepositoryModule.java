@@ -12,6 +12,7 @@ import by.intervale.akella266.rssreader.data.local.Local;
 import by.intervale.akella266.rssreader.data.local.NewsDao;
 import by.intervale.akella266.rssreader.data.local.NewsDatabase;
 import by.intervale.akella266.rssreader.data.local.NewsLocalDataSource;
+import by.intervale.akella266.rssreader.data.local.SourceDao;
 import by.intervale.akella266.rssreader.data.remote.NewsRemoteDataSource;
 import by.intervale.akella266.rssreader.data.remote.Remote;
 import dagger.Binds;
@@ -34,6 +35,11 @@ public class NewsRepositoryModule {
         return newsDatabase.newsDao();
     }
 
+
+    @Singleton
+    @Provides
+    SourceDao provideSourceDao(NewsDatabase newsDatabase){return newsDatabase.sourceDao();}
+
     @Singleton
     @Remote
     @Provides
@@ -44,7 +50,7 @@ public class NewsRepositoryModule {
     @Singleton
     @Provides
     @Local
-    NewsDataSource provideNewsLocalDataSource(NewsDao dao){
-        return new NewsLocalDataSource(dao);
+    NewsDataSource provideNewsLocalDataSource(NewsDao newsDao, SourceDao sourceDao){
+        return new NewsLocalDataSource(newsDao, sourceDao);
     }
 }

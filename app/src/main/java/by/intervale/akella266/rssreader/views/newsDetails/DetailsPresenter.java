@@ -10,6 +10,7 @@ import by.intervale.akella266.rssreader.R;
 import by.intervale.akella266.rssreader.data.News;
 import by.intervale.akella266.rssreader.data.NewsDataSource;
 import by.intervale.akella266.rssreader.data.NewsRepository;
+import by.intervale.akella266.rssreader.data.callbacks.GetNewsCallback;
 
 public class DetailsPresenter implements DetailsContract.Presenter{
 
@@ -28,7 +29,7 @@ public class DetailsPresenter implements DetailsContract.Presenter{
 
     @Override
     public void loadPage() {
-        mNewsRepository.getNews(mNewsId, new NewsDataSource.GetNewsCallback() {
+        mNewsRepository.getNews(mNewsId, new GetNewsCallback() {
             @Override
             public void onNewsLoaded(News news) {
                 Log.i("Link", news.getLink());

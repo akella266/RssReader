@@ -18,6 +18,8 @@ import by.intervale.akella266.rssreader.R;
 import by.intervale.akella266.rssreader.data.News;
 import by.intervale.akella266.rssreader.data.NewsDataSource;
 import by.intervale.akella266.rssreader.data.NewsRepository;
+import by.intervale.akella266.rssreader.data.Source;
+import by.intervale.akella266.rssreader.data.callbacks.LoadNewsCallback;
 import by.intervale.akella266.rssreader.di.ActivityScoped;
 import by.intervale.akella266.rssreader.util.CategoriesUtil;
 import by.intervale.akella266.rssreader.util.SourceChangedEvent;
@@ -52,22 +54,24 @@ public class MainPresenter implements MainContract.Presenter {
             if (!filteringUpdate)
                 mView.showError(mContext.getString(R.string.error_no_connection));
 
-            mNewsRepository.getTasksFromLocalDataSource(mSourceUrl, new NewsDataSource.LoadNewsCallback() {
-                @Override
-                public void onNewsLoaded(List<News> news) {
-                    Collections.sort(news, (news1, t1) -> (-1)*news1.getDate().compareTo(t1.getDate()));
-                    passNews(news);
-                }
+            if (mSourceUrl != null && !mSourceUrl.isEmpty()) {
+                mNewsRepository.getTasksFromLocalDataSource(mSourceUrl, new LoadNewsCallback() {
+                    @Override
+                    public void onNewsLoaded(List<News> news) {
+                        Collections.sort(news, (news1, t1) -> (-1) * news1.getDate().compareTo(t1.getDate()));
+                        passNews(news);
+                    }
 
-                @Override
-                public void onDataNotAvailable() {
-                    mView.showError(mContext.getString(R.string.error_read_from_database));
-                }
-            });
-            return;
+                    @Override
+                    public void onDataNotAvailable() {
+                        mView.showError(mContext.getString(R.string.error_read_from_database));
+                    }
+                });
+                return;
+            }
         }
 
-        mNewsRepository.getNews(mSourceUrl, new NewsDataSource.LoadNewsCallback() {
+        mNewsRepository.getNews(mSourceUrl, new LoadNewsCallback() {
             @Override
             public void onNewsLoaded(List<News> news) {
                 passNews(news);
@@ -103,11 +107,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void takeView(MainContract.View view) {
         mView = view;
-        if(isFirstLoad){
-            mSourceUrl = mContext.getString(R.string.source_tutby);
-            isFirstLoad = false;
-            loadNews(true, false);
-        }
+        if(isFirstLoad) firstLoad();
     }
 
     @Override
@@ -142,5 +142,21 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void openNewsDetails(News news) {
         mView.showNewsDetails(news);
+    }
+
+    @Override
+    public void openDialog() {
+        mView.showDialog();
+    }
+
+    private void firstLoad(){
+        mNewsRepository.getSources(sources -> {
+            if (sources.isEmpty()) mView.showNoNews();
+            else {
+                mSourceUrl = sources.get(0).getUrl();
+                isFirstLoad = false;
+                loadNews(true, false);
+            }
+        });
     }
 }

@@ -14,6 +14,7 @@ public interface MainContract {
         void showNewsDetails(News news);
         void showError(String message);
         void showNoNews();
+        void showDialog();
     }
     interface Presenter extends BasePresenter<View>{
         void loadNews(final boolean showLoadingUI, boolean filteringUpdate);
@@ -21,5 +22,6 @@ public interface MainContract {
         boolean checkNetworkAvailable();
         void setSource(String source);
         void openNewsDetails(News news);
+        void openDialog();
     }
 }

@@ -13,9 +13,8 @@
     <string name="nav_item_lenta">Lenta.ru</string>
     <string name="nav_item_offer_news">Предложить новость</string>
     <string name="nav_item_settings">Настройки</string>
-    <string name="nav_item_about">О нас</string>
 
-    <string name="error_invalid_url">Ошибка в ссылке</string>
+    <string name="error_invalid_url">Некорректный URL</string>
     <string name="error_no_connection">Интернет недоступен</string>
     <string name="error_server_not_respond">Сервер недоступен</string>
     <string name="error_read_from_database">Ошибка при чтении из базы данных</string>
@@ -47,4 +46,6 @@
     <string name="dialog_title">Отправление данных…</string>
     <string name="dialog_message">Ожидайте, происходит отправление данных…</string>
     <string name="sending_completed">Данные отправлены</string>
+    <string name="add_source">Добавить источник</string>
+    <string name="input_url">http://sample.com/rss</string>
 </resources>

@@ -4,6 +4,7 @@ import android.arch.persistence.room.Insert;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,6 +15,12 @@ import javax.inject.Inject;
 
 import by.intervale.akella266.rssreader.data.News;
 import by.intervale.akella266.rssreader.data.NewsDataSource;
+import by.intervale.akella266.rssreader.data.Source;
+import by.intervale.akella266.rssreader.data.callbacks.GetNewsCallback;
+import by.intervale.akella266.rssreader.data.callbacks.LoadNewsCallback;
+import by.intervale.akella266.rssreader.data.callbacks.LoadSourcesCallback;
+import by.intervale.akella266.rssreader.data.callbacks.OnClearingCompleteCallback;
+import by.intervale.akella266.rssreader.data.callbacks.SourceSavedCallback;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableCompletableObserver;
@@ -23,28 +30,31 @@ import io.reactivex.schedulers.Schedulers;
 public class NewsLocalDataSource implements NewsDataSource {
 
     private NewsDao mNewsDao;
+    private SourceDao mSourceDao;
 
     @Inject
-    public NewsLocalDataSource(@NonNull NewsDao mNewsDao) {
+    public NewsLocalDataSource(@NonNull NewsDao mNewsDao,
+                               @NonNull SourceDao mSourceDao) {
         this.mNewsDao = mNewsDao;
+        this.mSourceDao = mSourceDao;
     }
 
     @Override
     public void getNews(@NonNull String source, @NonNull LoadNewsCallback callback) {
         String s = source.split("/")[2];
-        Log.i("Database", "getNews(all) Time:" + Calendar.getInstance().getTimeInMillis());
+        Log.d("Database", "getNews(all) Time:" + Calendar.getInstance().getTimeInMillis());
         mNewsDao.getAllNews(s)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<List<News>>() {
                     @Override
                     public void onSuccess(List<News> news) {
-                        Log.i("Database", "News has been loaded");
+                        Log.d("Database", "News has been loaded");
                         callback.onNewsLoaded(news);
                     }
                     @Override
                     public void onError(Throwable e) {
-                        Log.i("Database", "News not loaded");
+                        Log.d("Database", "News not loaded");
                         callback.onDataNotAvailable();
                     }
                 });
@@ -52,7 +62,7 @@ public class NewsLocalDataSource implements NewsDataSource {
 
     @Override
     public void getNews(@NonNull String id, @NonNull GetNewsCallback callback) {
-        Log.i("Database", "getNews(id) Time:" + Calendar.getInstance().getTimeInMillis());
+        Log.d("Database", "getNews(id) Time:" + Calendar.getInstance().getTimeInMillis());
         mNewsDao.getNews(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -70,19 +80,19 @@ public class NewsLocalDataSource implements NewsDataSource {
 
     @Override
     public void saveNews(List<News> news) {
-        Log.i("Database", "saveNews Time:" + Calendar.getInstance().getTimeInMillis());
+        Log.d("Database", "saveNews Time:" + Calendar.getInstance().getTimeInMillis());
         Completable.fromAction(() -> mNewsDao.addNews(news))
                 .subscribeOn(Schedulers.io())
                 .subscribe(new DisposableCompletableObserver() {
                     @Override
                     public void onComplete() {
-                        Log.i("Database", "News has been saved");
+                        Log.d("Database", "News has been saved");
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        Log.i("Database", "News not saved\n" + e.toString());
+                        Log.d("Database", "News not saved\n" + e.toString());
                     }
                 });
     }
@@ -94,20 +104,84 @@ public class NewsLocalDataSource implements NewsDataSource {
 
     @Override
     public void clearNews(@NonNull String source, @NonNull OnClearingCompleteCallback callback) {
-        Log.i("Database", "clearNews Time:" + Calendar.getInstance().getTimeInMillis());
+        Log.d("Database", "clearNews Time:" + Calendar.getInstance().getTimeInMillis());
         Completable.fromAction(() -> mNewsDao.removeNewsFromSource(source.split("/")[2]))
                 .subscribeOn(Schedulers.io())
                 .subscribe(new DisposableCompletableObserver() {
                     @Override
                     public void onComplete() {
-                        Log.i("Database", "News has been cleared");
+                        Log.d("Database", "News has been cleared");
                         callback.onComplete();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.i("Database", "News not cleared");
+                        Log.d("Database", "News not cleared");
                     }
                 });
+    }
+
+    @Override
+    public void getSources(@NonNull LoadSourcesCallback callback) {
+        mSourceDao.getAllSources()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<List<Source>>() {
+                    @Override
+                    public void onSuccess(List<Source> sources) {
+                        Log.d("Database", "Sources has been loaded");
+                        callback.onSourcesLoaded(sources);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("Database", "Sources not loaded");
+                        callback.onSourcesLoaded(new ArrayList<>());
+                    }
+                });
+    }
+
+    @Override
+    public void addSource(@NonNull Source source, @NonNull SourceSavedCallback callback) {
+
+        Completable.fromAction(() -> mSourceDao.insert(source))
+                .subscribeOn(Schedulers.io())
+                .subscribe(new DisposableCompletableObserver() {
+                    @Override
+                    public void onComplete() {
+                        Log.d("Database", "Source has been saved");
+                        callback.onSaved();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("Database", "Source not been saved");
+                        callback.onError();
+                    }
+                });
+    }
+
+    @Override
+    public void addSources(@NonNull SourceSavedCallback callback, @NonNull Source... sources) {
+        Completable.fromAction(() -> mSourceDao.insert(sources))
+                .subscribeOn(Schedulers.io())
+                .subscribe(new DisposableCompletableObserver() {
+                    @Override
+                    public void onComplete() {
+                        Log.d("Database", "Sources has been saved");
+                        callback.onSaved();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("Database", "Sources not been saved");
+                        callback.onError();
+                    }
+                });
+    }
+
+    @Override
+    public void deleteSource(@NonNull Source source) {
+
     }
 }

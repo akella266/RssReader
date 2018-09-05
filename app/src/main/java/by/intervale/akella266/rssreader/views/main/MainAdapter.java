@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,9 +25,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 
     private Context mContext;
     private List<News> mNews;
-    private OnItemClickListener mListener;
+    private OnNewsItemClickListener mListener;
 
-    public MainAdapter(Context mContext, OnItemClickListener listener) {
+    public MainAdapter(Context mContext, OnNewsItemClickListener listener) {
         this.mContext = mContext;
         this.mNews = new ArrayList<>();
         this.mListener = listener;

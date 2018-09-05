@@ -1,5 +1,8 @@
 package by.intervale.akella266.rssreader.views.main;
 
+import android.app.DialogFragment;
+import android.support.v7.widget.RecyclerView;
+
 import by.intervale.akella266.rssreader.di.ActivityScoped;
 import by.intervale.akella266.rssreader.di.FragmentScoped;
 import dagger.Binds;

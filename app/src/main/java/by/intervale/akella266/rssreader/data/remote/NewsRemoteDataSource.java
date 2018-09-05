@@ -22,9 +22,15 @@ import javax.inject.Singleton;
 
 import by.intervale.akella266.rssreader.data.News;
 import by.intervale.akella266.rssreader.data.NewsDataSource;
+import by.intervale.akella266.rssreader.data.Source;
 import by.intervale.akella266.rssreader.data.api.ApiService;
 import by.intervale.akella266.rssreader.data.api.models.Channel;
 import by.intervale.akella266.rssreader.data.api.models.Item;
+import by.intervale.akella266.rssreader.data.callbacks.GetNewsCallback;
+import by.intervale.akella266.rssreader.data.callbacks.LoadNewsCallback;
+import by.intervale.akella266.rssreader.data.callbacks.LoadSourcesCallback;
+import by.intervale.akella266.rssreader.data.callbacks.OnClearingCompleteCallback;
+import by.intervale.akella266.rssreader.data.callbacks.SourceSavedCallback;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -55,19 +61,6 @@ public class NewsRemoteDataSource implements NewsDataSource {
                         throwable -> {
                             callback.onDataNotAvailable();
                         });
-//        Parser parser = new Parser();
-//        parser.execute(source);
-//        parser.onFinish(new Parser.OnTaskCompleted() {
-//            @Override
-//            public void onTaskCompleted(ArrayList<Article> list) {
-//                callback.onNewsLoaded(convertArticleToNews(source.split("/")[2], list));
-//            }
-//
-//            @Override
-//            public void onError() {
-//                callback.onDataNotAvailable();
-//            }
-//        });
     }
 
     @Override
@@ -90,24 +83,24 @@ public class NewsRemoteDataSource implements NewsDataSource {
 
     }
 
-    private List<News> convertArticleToNews(String source, ArrayList<Article> articles){
-        List<News> news = new ArrayList<>();
-        for(Article article : articles){
-            String descr = Html.fromHtml(article.getDescription()).toString();
-            descr = descr.replaceAll("\n", "");
-            String url = article.getLink();
-            news.add(new News(
-                    UUID.randomUUID().toString(),
-                    article.getTitle(),
-                    article.getImage(),
-                    descr,
-                    article.getPubDate(),
-                    source,
-                    url,
-                    article.getCategories()
-            ));
-        }
-        return news;
+    @Override
+    public void getSources(@NonNull LoadSourcesCallback callback) {
+
+    }
+
+    @Override
+    public void addSource(@NonNull Source source, @NonNull SourceSavedCallback callback) {
+
+    }
+
+    @Override
+    public void deleteSource(@NonNull Source source) {
+
+    }
+
+    @Override
+    public void addSources(@NonNull SourceSavedCallback callback, @NonNull Source... sources) {
+
     }
 
     private List<News> convertItemToNews(String source, List<Item> items){

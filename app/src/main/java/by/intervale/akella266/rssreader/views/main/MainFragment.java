@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,6 +16,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -52,6 +56,8 @@ public class MainFragment extends Fragment implements MainContract.View{
 
     @Inject
     MainContract.Presenter mPresenter;
+    @Inject
+    AddSourceDialogFragment mDialog;
 
     @Inject
     public MainFragment() {}
@@ -60,6 +66,7 @@ public class MainFragment extends Fragment implements MainContract.View{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(true);
         mAdapter = new MainAdapter(getActivity().getApplicationContext(), news -> mPresenter.openNewsDetails(news));
     }
 
@@ -141,6 +148,23 @@ public class MainFragment extends Fragment implements MainContract.View{
         return view;
     }
 
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_add_source:{
+                mPresenter.openDialog();
+                return true;
+            }
+            default: return super.onOptionsItemSelected(item);
+        }
+    }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -207,7 +231,13 @@ public class MainFragment extends Fragment implements MainContract.View{
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onSourceChanged(SourceChangedEvent event){
         String sourceUrl = event.getSourceUrl();
+        Log.d("SourceChanged", sourceUrl);
         mPresenter.setSource(sourceUrl);
         mPresenter.loadNews(true, false);
+    }
+
+    @Override
+    public void showDialog() {
+        mDialog.show(getActivity().getSupportFragmentManager(), "ADD_SOURCE");
     }
 }
