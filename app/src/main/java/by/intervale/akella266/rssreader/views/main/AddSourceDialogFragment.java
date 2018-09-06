@@ -2,14 +2,12 @@ package by.intervale.akella266.rssreader.views.main;
 
 import android.app.Dialog;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
@@ -24,7 +22,7 @@ import by.intervale.akella266.rssreader.R;
 import by.intervale.akella266.rssreader.data.NewsRepository;
 import by.intervale.akella266.rssreader.data.Source;
 import by.intervale.akella266.rssreader.data.callbacks.SourceSavedCallback;
-import by.intervale.akella266.rssreader.util.SourceAddedEvent;
+import by.intervale.akella266.rssreader.util.events.SourceAddedEvent;
 
 public class AddSourceDialogFragment extends DialogFragment {
 

@@ -1,4 +1,4 @@
-package by.intervale.akella266.rssreader.util;
+package by.intervale.akella266.rssreader.util.events;
 
 import by.intervale.akella266.rssreader.views.main.NewsFilterType;
 

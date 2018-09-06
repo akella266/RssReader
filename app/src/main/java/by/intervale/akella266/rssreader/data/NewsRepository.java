@@ -92,6 +92,6 @@ public class NewsRepository implements NewsDataSource {
 
     @Override
     public void deleteSource(@NonNull Source source) {
-
+        mNewsLocalDataSource.deleteSource(source);
     }
 }

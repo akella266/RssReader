@@ -3,11 +3,6 @@ package by.intervale.akella266.rssreader.views.main;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.design.widget.Snackbar;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,16 +11,10 @@ import javax.inject.Inject;
 
 import by.intervale.akella266.rssreader.R;
 import by.intervale.akella266.rssreader.data.News;
-import by.intervale.akella266.rssreader.data.NewsDataSource;
 import by.intervale.akella266.rssreader.data.NewsRepository;
-import by.intervale.akella266.rssreader.data.Source;
 import by.intervale.akella266.rssreader.data.callbacks.LoadNewsCallback;
 import by.intervale.akella266.rssreader.di.ActivityScoped;
 import by.intervale.akella266.rssreader.util.CategoriesUtil;
-import by.intervale.akella266.rssreader.util.SourceChangedEvent;
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.functions.Predicate;
 
 @ActivityScoped
 public class MainPresenter implements MainContract.Presenter {

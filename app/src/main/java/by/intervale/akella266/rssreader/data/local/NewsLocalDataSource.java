@@ -143,7 +143,6 @@ public class NewsLocalDataSource implements NewsDataSource {
 
     @Override
     public void addSource(@NonNull Source source, @NonNull SourceSavedCallback callback) {
-
         Completable.fromAction(() -> mSourceDao.insert(source))
                 .subscribeOn(Schedulers.io())
                 .subscribe(new DisposableCompletableObserver() {
@@ -182,6 +181,19 @@ public class NewsLocalDataSource implements NewsDataSource {
 
     @Override
     public void deleteSource(@NonNull Source source) {
+        Completable.fromAction(() -> mSourceDao.delete(source))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableCompletableObserver() {
+                    @Override
+                    public void onComplete() {
+                        Log.d("Database", "Sources has been removed");
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("Database", "Sources not been removed");
+                    }
+                });
     }
 }
